@@ -48,10 +48,39 @@ class Board:
         return board
 
     def is_win(self):
-        pass
+        # Checking for vertical win
+        for col in range(3):
+            if self.position[0, col] == self.player_2 and self.position[1, col] == self.player_2 and self.position[2, col] == self.player_2:
+                return True
+
+        # Checking for horizontal win
+        for row in range(3):
+            if self.position[row, 0] == self.player_2 and self.position[row, 1] == self.player_2 and self.position[row, 2] == self.player_2:
+                return True
+            
+        # Checking for / diagonal
+        if self.position[0, 2] == self.player_2 and self.position[1, 1] == self.player_2 and self.position[2, 0] == self.player_2:
+            return True
+
+        # Checking for \ diagonal
+        if self.position[0, 0] == self.player_2 and self.position[1, 1] == self.player_2 and self.position[2, 2] == self.player_2:
+            return True
+
+        return False
 
     def is_draw(self):
-        pass
+        '''
+            All positions must be filled with combination of symbols
+            from player 1 and player 1, thus 0 of them can be symbol
+            that is used for empty positions. First we always check if
+            filled board is won, because if it is then it doesn't matter
+            if every position is taken.
+        '''
+        for row, col in self.position:
+            if self.position[row, col] == self.empty:
+                return False
+        
+        return True
 
     def run(self):
         pass
@@ -60,7 +89,16 @@ if __name__ == "__main__":
     board = Board()
     print(board.__dict__)
     print(board)
-
+    
+    board.position = {
+        (0, 0): "o", (0, 1): "x", (0, 2): ".",
+        (1, 0): ".", (1, 1): "o", (1, 2): ".",
+        (2, 0): ".", (2, 1): "x", (2, 2): "o",
+    }
+    print(board.is_win())
+    print(board.is_draw())
+    
+    '''
     board_1 = board.make_move(1, 1) 
     print(board_1.__dict__)
     print(board_1)
@@ -68,4 +106,4 @@ if __name__ == "__main__":
     board_2 = board_1.make_move(2, 2) 
     print(board_2.__dict__)
     print(board_2)
-    
+    '''
