@@ -82,6 +82,17 @@ class Board:
         
         return True
 
+    # Generates legal states as data
+    def generate_states(self):
+        action_list = []
+
+        for row in range(3):
+            for col in range(3):
+                if self.position[row, col] == self.empty:
+                    action_list.append(self.make_move(row, col))
+
+        return action_list
+
     def run(self):
         pass
 
@@ -90,14 +101,7 @@ if __name__ == "__main__":
     print(board.__dict__)
     print(board)
     
-    board.position = {
-        (0, 0): "o", (0, 1): "x", (0, 2): ".",
-        (1, 0): ".", (1, 1): "o", (1, 2): ".",
-        (2, 0): ".", (2, 1): "x", (2, 2): "o",
-    }
-    print(board.is_win())
-    print(board.is_draw())
-    
+    print(board.generate_states()[3])
     '''
     board_1 = board.make_move(1, 1) 
     print(board_1.__dict__)
