@@ -1,12 +1,15 @@
 from copy import deepcopy
+from tree_search import Node, MCTS
+
 
 # Board class for TicTacToe
-class Board:
-    def __init__(self, board=None):
+class TicTacToe:
+    def __init__(self, num_iterations=1000, board=None):
         # Defining players
         self.player_1 = "x"
         self.player_2 = "o"
         self.empty = "."
+        self.num_iterations = num_iterations
 
         # Creates board
         self.position = {}
@@ -39,7 +42,7 @@ class Board:
     # Make a possible move
     def make_move(self, row, col):
         # Creating new board object of our current position
-        board = Board(self)
+        board = TicTacToe(board=self)
 
         # Play the move
         board.position[row, col] = board.player_1
@@ -94,20 +97,65 @@ class Board:
         return action_list
 
     def run(self):
-        pass
+
+        print(self)
+
+        mcts = MCTS(num_iterations=self.num_iterations)
+
+        while True:    
+            user_input = input("Enter coordinates (x, y): ")
+            x_cor = int(user_input[0]) - 1
+            y_cor = int(user_input[-1]) - 1
+            '''
+            ### UNCOMMENT THIS IF YOU WANT TO CHECK VALIDITY OF INPUT
+            while x_cor not in [0, 1, 2] and y_cor not in [0, 1, 2]:
+                print("Wrong input!")
+                user_input = input("Enter coordinates (x, y): ")
+                x_cor = int(user_input[0])
+                y_cor = int(user_input[-1])
+            '''
+
+            self = self.make_move(y_cor, x_cor)
+            
+            print(self)
+
+            # Now AI plays a move
+            best_move = mcts.search(self)
+            try:
+                self = best_move.board
+                print(self)
+            
+            # Case where game is over
+            except:
+                pass
+
+                
+            if self.is_win():
+                print(f"Player {self.player_2} has won the game!")
+                break
+
+            elif self.is_draw():
+                print("Game is drawn!")
+                break
+            
 
 if __name__ == "__main__":
-    board = Board()
-    print(board.__dict__)
-    print(board)
+    board = TicTacToe()
+    ### I used 5 iterations here just to test all cases, in reality you'd use around 1000 iterations
+    mcts = MCTS(num_iterations=5)
     
-    print(board.generate_states()[3])
-    '''
-    board_1 = board.make_move(1, 1) 
-    print(board_1.__dict__)
-    print(board_1)
+    # AI vs AI
+    while True:
+        try:
+            best_move = mcts.search(board)
+            board = best_move.board
+            
+        except:
+            print(board)
+            if board.is_win():
+                print(f"Player {board.player_2} won the game!")
+            else:
+                print("Game is drawn!")
+
+            break
     
-    board_2 = board_1.make_move(2, 2) 
-    print(board_2.__dict__)
-    print(board_2)
-    '''
