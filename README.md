@@ -5,6 +5,8 @@ Solving Tic Tac Toe game with 3x3 board using tree search algorithm that has lea
 
 ## Running
 
+Clone repository.
+
 In cmd/terminal/PowerShell run `python3 main.py`
 
 You can change number of iterations that tree search will use by changing parameter, eg. `python3 main.py -i 1000` .
@@ -12,3 +14,7 @@ You can change number of iterations that tree search will use by changing parame
 ## AI vs AI
 
 By running game.py file you can see results that come when AI plays against itself.
+
+## Requirements
+
+There are no additional requirements for program to work.
